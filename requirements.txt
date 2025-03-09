@@ -1,0 +1,14 @@
+langgraph
+langchain-community
+langchain-openai
+langchain-anthropic
+tavily-python
+elevenlabs
+pydub
+fastapi
+uvicorn
+pydantic
+python-dotenv
+boto3
+python-multipart
+requests
