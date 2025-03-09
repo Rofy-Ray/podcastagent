@@ -137,7 +137,7 @@ async def generate_podcast_audio(transcript, host_voice=None, host_gender=None,
     client = await init_client()
     
     conversations = await preprocess_transcript(transcript, host_name, guest_name)
-    logger.debug(f"Processing {len(conversations)} conversation segments")
+    # logger.debug(f"Processing {len(conversations)} conversation segments")
     
     if not conversations:
         logger.error("Empty conversations list from transcript")
@@ -187,7 +187,7 @@ async def generate_podcast_audio(transcript, host_voice=None, host_gender=None,
                 raise ValueError(f"Invalid audio data for {current_speaker}") from e
             
             combined_audio += audio_segment
-            logger.info(f"Added {len(audio_segment)}ms audio for {current_speaker}")
+            # logger.info(f"Added {len(audio_segment)}ms audio for {current_speaker}")
                         
             delay_duration = random.uniform(0.2, 0.5) * 1000  
             combined_audio += AudioSegment.silent(duration=delay_duration)
@@ -206,7 +206,7 @@ async def generate_podcast_audio(transcript, host_voice=None, host_gender=None,
     
     combined_audio.export(temp_file_path, format="mp3")
     
-    logger.info(f"Audio file saved to {temp_file_path}")
+    # logger.info(f"Audio file saved to {temp_file_path}")
     return filename, temp_file_path
 
 async def setup_voice_for_role(role, voice_file, gender):

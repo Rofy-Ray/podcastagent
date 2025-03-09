@@ -74,7 +74,7 @@ async def upload_to_s3(file_path, bucket_name, object_key, expiration=3600):
     
     try:
         s3_client.upload_file(file_path, bucket_name, object_key)
-        logger.info(f"Successfully uploaded file to s3://{bucket_name}/{object_key}")
+        # logger.info(f"Successfully uploaded file to s3://{bucket_name}/{object_key}")
     except Exception as e:
         logger.error(f"Failed to upload file to S3: {str(e)}")
         raise e

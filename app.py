@@ -126,7 +126,7 @@ async def process_podcast_request(payload: RequestPayload) -> ResponsePayload:
         
         if os.path.exists(audio_path):
             os.remove(audio_path)
-            logger.info(f"Temporary file {audio_path} removed")
+            # logger.info(f"Temporary file {audio_path} removed")
         
         results = [
             ResultResponseItem(
@@ -182,7 +182,7 @@ async def process_podcast_request(payload: RequestPayload) -> ResponsePayload:
             if file_path and os.path.exists(file_path):
                 try:
                     os.remove(file_path)
-                    logger.info(f"Temporary file {file_path} removed")
+                    # logger.info(f"Temporary file {file_path} removed")
                 except Exception as e:
                     logger.error(f"Failed to remove temporary file {file_path}: {str(e)}")
 
@@ -215,9 +215,10 @@ async def run_podcast_generator(topic,
     host_voice, host_gender = await setup_voice_for_role('host', host_voice_file, host_gender)
     guest_voice, guest_gender = await setup_voice_for_role('guest', guest_voice_file, guest_gender)
     
-    logger.info(f"Generating podcast on topic: {topic}")
-    async for event in graph.astream({"topic": topic, "host": host_name, "guest": guest_name}, thread, stream_mode="updates"):
-        logger.info(event)
+    # logger.info(f"Generating podcast on topic: {topic}")
+    async for _ in graph.astream({"topic": topic, "host": host_name, "guest": guest_name}, thread, stream_mode="updates"):
+        # logger.info(event)
+        continue
     
     final_state = graph.get_state(thread)
     transcript = final_state.values.get('final_transcript')
@@ -225,7 +226,7 @@ async def run_podcast_generator(topic,
     if not transcript:
         raise ValueError("Failed to generate transcript")
     
-    logger.info("Transcript generated. Creating audio...")
+    # logger.info("Transcript generated. Creating audio...")
     
     filename, audio_path = await generate_podcast_audio(
         transcript,
@@ -237,7 +238,7 @@ async def run_podcast_generator(topic,
         guest_name=guest_name
     )
     
-    logger.info(f"Podcast generated: {filename}")
+    # logger.info(f"Podcast generated: {filename}")
     return filename, audio_path
         
 async def save_uploaded_file(file: UploadFile) -> str:
@@ -253,7 +254,7 @@ async def save_uploaded_file(file: UploadFile) -> str:
         with open(file_path, "wb") as f:
             f.write(content)
             
-        logger.info(f"Successfully saved uploaded file to {file_path}")
+        # logger.info(f"Successfully saved uploaded file to {file_path}")
         return file_path
     except Exception as e:
         logger.error(f"Error saving uploaded file: {str(e)}", exc_info=True)
@@ -275,7 +276,7 @@ async def save_base64_file(base64_data: str) -> str:
         with open(file_path, "wb") as f:
             f.write(content)
             
-        logger.info(f"Successfully saved base64 file to {file_path}")
+        # logger.info(f"Successfully saved base64 file to {file_path}")
         return file_path
     except Exception as e:
         logger.error(f"Error saving base64 file: {str(e)}", exc_info=True)
@@ -291,7 +292,7 @@ async def cleanup_files(json_data: dict):
                     file_path = user_input[file_key]
                     if os.path.exists(file_path):
                         os.unlink(file_path)
-                        logger.info(f"Cleaned up temporary file: {file_path}")
+                        # logger.info(f"Cleaned up temporary file: {file_path}")
     except Exception as e:
         logger.error(f"Error during file cleanup: {str(e)}", exc_info=True)
         
